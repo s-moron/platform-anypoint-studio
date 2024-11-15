@@ -1,0 +1,12 @@
+http:
+  port: "8081"
+  
+smoron:
+  protocol: 'HTTPS'
+  port: "443"
+  host: "s-smoron-pre-lspfmh.5sc6y6-3.usa-e2.cloudhub.io"
+  client_id: "![1waXEe8YOSasqRCHyzU/pXUZ+8nvszm+iTSwjAsncnUicrK6FOtx2w==]"
+  client_secret: "![cjXfmUnf3gedLfSJ3NJhjJRlnmISDP8dr4GfkZYGNybKnfUs5JChCA]"
+  
+api:
+  id: "20061108"

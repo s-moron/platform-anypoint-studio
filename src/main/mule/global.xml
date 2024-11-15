@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+    <configuration-properties doc:name="Configuration properties" doc:id="caae24ee-98ef-4feb-ad8d-73d7715d74c6" file="properties/${mule.env}-config.yaml" />
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3656f6f6-be17-474b-a226-12fb1d27df8c">
+        <http:request-connection protocol="${smoron.protocol}" host="${smoron.host}" port="${smoron.port}" />
+        <http:default-headers>
+            <http:default-header key="client_id" value='#[p("secure::smoron.client_id")]' />
+            <http:default-header key="client_secret" value='#[p("secure::smoron.client_secret")]' />
+        </http:default-headers>
+    </http:request-config>
+    <http:listener-config name="p-smoron-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="p-smoron-config" api="resource::50864e32-545b-42df-954c-a3abb32885f0:p-smoron:1.0.1:oas:zip:p-smoron.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="363d6a98-6802-4c20-aceb-87679a513fe6" flowRef="p-smoron-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="64fc4b88-e0f4-45f3-9a13-0e9262bfe4f5" file="properties/${mule.env}-config.yaml" key="${encryption.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+</mule>
